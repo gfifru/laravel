@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +27,33 @@ Route::get('/about', function () {
 Route::get('/contacts', function () {
     return view('contacts');
 })->name('contacts');
+
+// Админка новостей
+Route::prefix('/admin/categories')->name('admin.')->group(function () {
+    Route::get('/', [AdminNewsController::class, 'index'])
+        ->name('categories.index');
+    Route::get('/create', [AdminNewsController::class, 'create'])
+        ->name('categories.create');
+    Route::get('/{id}/edit', [AdminNewsController::class, 'edit'])
+        ->name('categories.edit')
+        ->where('id', '\d+');
+});
+
+// Категории новостей
+Route::prefix('/categories')->group(function () {
+    Route::get('/', [CategoryController::class, 'index'])
+        ->name('categories.index');
+    Route::get('/{id}', [CategoryController::class, 'show'])
+        ->name('categories.show');
+});
+// Новости
+Route::prefix('/news')->group(function () {
+//    Route::get('/', [NewsController::class, 'index'])
+//        ->name('news.index');
+    Route::get('/{id}', [NewsController::class, 'show'])
+        ->name('news.show');
+});
+
+
+
+

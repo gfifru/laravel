@@ -23,6 +23,7 @@
 <body class="antialiased">
     <div style="padding-top: 20px;">
         <a class="p-6" href="{{ route('welcome') }}">Главная</a>
+        <a class="p-6" href="{{ route('categories.index') }}">Новости</a>
         <a class="p-6" href="{{ route('about') }}">О нас</a>
         <a class="p-6" href="{{ route('contacts') }}">Контакты</a>
     </div>
