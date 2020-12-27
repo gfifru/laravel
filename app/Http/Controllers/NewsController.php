@@ -16,8 +16,9 @@ class NewsController extends Controller
      */
     public function show($id)
     {
-        $news = $this->news["{$id}"];
-
+        if (isset($this->news[$id])) {
+            $news = $this->news[$id];
+        }
         return view('news.show', compact('news'));
 
     }

@@ -23,7 +23,10 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = $this->categories["{$id}"];
+        if (isset($this->categories[$id])) {
+            $category = $this->categories[$id];
+        }
+
         $news = $this->news;
 
         $category_id = $id;
