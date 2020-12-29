@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\News;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers;
-use Illuminate\Support\Arr;
+use App\Http\Controllers\Controller;
 
-class CategoryController extends Controller
+class CategoriesController extends Controller
 {
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -14,7 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categories;
-        return view('categories.index', compact('categories'));
+        return view('news.categories.index', compact('categories'));
     }
 
     /**
@@ -38,7 +36,7 @@ class CategoryController extends Controller
         $response = array_filter($map, function($element) {
             return !empty($element);
         });
-        return view('categories.show', compact('category', 'response'));
+        return view('news.categories.show', compact('category', 'response'));
 
     }
 }

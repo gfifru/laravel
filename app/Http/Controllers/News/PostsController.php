@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\News;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers;
-use Illuminate\Support\Arr;
+use App\Http\Controllers\Controller;
 
-class NewsController extends Controller
+class PostsController extends Controller
 {
 
 
@@ -19,7 +17,7 @@ class NewsController extends Controller
         if (isset($this->news[$id])) {
             $news = $this->news[$id];
         }
-        return view('news.show', compact('news'));
+        return view('news.posts.show', compact('news'));
 
     }
 

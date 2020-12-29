@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NewsController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\News\PostsController;
+use App\Http\Controllers\News\CategoriesController;
+use App\Http\Controllers\News\Admin\PostsController as AdminPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,29 +28,38 @@ Route::get('/contacts', function () {
     return view('contacts');
 })->name('contacts');
 
+
+// Админка
+Route::get('/admin', function () {
+    return view('admin.index');
+})->name('admin.index');
+
 // Админка новостей
-Route::prefix('/admin/categories')->name('admin.')->group(function () {
-    Route::get('/', [AdminNewsController::class, 'index'])
-        ->name('categories.index');
-    Route::get('/create', [AdminNewsController::class, 'create'])
-        ->name('categories.create');
-    Route::get('/{id}/edit', [AdminNewsController::class, 'edit'])
-        ->name('categories.edit')
+Route::prefix('/admin/posts')->group(function () {
+
+    Route::get('/', [AdminPostController::class, 'index'])
+        ->name('admin.posts.index');
+
+    Route::get('/create', [AdminPostController::class, 'create'])
+        ->name('admin.posts.create');
+
+    Route::get('/{id}/edit', [AdminPostController::class, 'edit'])
+        ->name('admin.posts.edit')
         ->where('id', '\d+');
 });
 
 // Категории новостей
 Route::prefix('/categories')->group(function () {
-    Route::get('/', [CategoryController::class, 'index'])
+    Route::get('/', [CategoriesController::class, 'index'])
         ->name('categories.index');
-    Route::get('/{id}', [CategoryController::class, 'show'])
+    Route::get('/{id}', [CategoriesController::class, 'show'])
         ->name('categories.show');
 });
 // Новости
 Route::prefix('/news')->group(function () {
-//    Route::get('/', [NewsController::class, 'index'])
+//    Route::get('/', [PostsController::class, 'index'])
 //        ->name('news.index');
-    Route::get('/{id}', [NewsController::class, 'show'])
+    Route::get('/{id}', [PostsController::class, 'show'])
         ->name('news.show');
 });
 
