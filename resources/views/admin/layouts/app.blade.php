@@ -57,7 +57,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if(request()->is('admin/posts'))active @endif" href="{{ route('admin.posts.index') }}">
+                        <a class="nav-link @if(request()->is('admin/posts'))active @endif" href="{{ route('admin.post.index') }}">
                             <span data-feather="file"></span>
                             Новости
                         </a>
@@ -67,6 +67,7 @@
         </nav>
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            @include('admin.includes.messages')
             @yield('content')
         </main>
     </div>

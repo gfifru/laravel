@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\News\PostsController;
 use App\Http\Controllers\News\CategoriesController;
-use App\Http\Controllers\News\Admin\PostsController as AdminPostController;
+use App\Http\Controllers\News\Admin\PostController as AdminPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,17 +35,8 @@ Route::get('/admin', function () {
 })->name('admin.index');
 
 // Админка новостей
-Route::prefix('/admin/posts')->group(function () {
-
-    Route::get('/', [AdminPostController::class, 'index'])
-        ->name('admin.posts.index');
-
-    Route::get('/create', [AdminPostController::class, 'create'])
-        ->name('admin.posts.create');
-
-    Route::get('/{id}/edit', [AdminPostController::class, 'edit'])
-        ->name('admin.posts.edit')
-        ->where('id', '\d+');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('post', AdminPostController::class);
 });
 
 // Категории новостей
@@ -57,7 +48,7 @@ Route::prefix('/categories')->group(function () {
 });
 // Новости
 Route::prefix('/news')->group(function () {
-//    Route::get('/', [PostsController::class, 'index'])
+//    Route::get('/', [PostsController2::class, 'index'])
 //        ->name('news.index');
     Route::get('/{id}', [PostsController::class, 'show'])
         ->name('news.show');
