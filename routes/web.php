@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\News\PostsController;
+use App\Http\Controllers\News\CategoriesController;
+use App\Http\Controllers\News\Admin\PostController as AdminPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +18,42 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/about', function () {
     return view('about');
+})->name('about');
+
+Route::get('/contacts', function () {
+    return view('contacts');
+})->name('contacts');
+
+
+// Админка
+Route::get('/admin', function () {
+    return view('admin.index');
+})->name('admin.index');
+
+// Админка новостей
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('post', AdminPostController::class);
 });
 
-Route::get('/about', function () {
-    return view('about');
+// Категории новостей
+Route::prefix('/categories')->group(function () {
+    Route::get('/', [CategoriesController::class, 'index'])
+        ->name('categories.index');
+    Route::get('/{id}', [CategoriesController::class, 'show'])
+        ->name('categories.show');
 });
+// Новости
+Route::prefix('/news')->group(function () {
+//    Route::get('/', [PostsController2::class, 'index'])
+//        ->name('news.index');
+    Route::get('/{id}', [PostsController::class, 'show'])
+        ->name('news.show');
+});
+
+
+
+
