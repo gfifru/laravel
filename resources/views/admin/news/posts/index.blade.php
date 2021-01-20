@@ -11,10 +11,30 @@
 
     <h2>Список новостей</h2>
 
-    <ul class="list">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Заголовок</th>
+                <th>Категория</th>
+                <th>Дата создания</th>
+                <th>Статус</th>
+                <th>Управление</th>
+            </tr>
+        </thead>
+        <tbody>
         @foreach($posts as $post)
-            <li>{{ $post['title'] }}</li>
+            <tr>
+                <td>{{ $post->id }}</td>
+                <td>{{ $post->title }}</td>
+                <td>{{ $post->category_title }}</td>
+                <td>{{ $post->created_at }}</td>
+                <td>{{ $post->status }}</td>
+                <td><a href="{{ route('admin.post.edit', $post->id) }}">Ред.</a></td>
+            </tr>
         @endforeach
-    </ul>
+        </tbody>
+    </table>
+
 
 @endsection

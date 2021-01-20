@@ -57,9 +57,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if(request()->is('admin/posts'))active @endif" href="{{ route('admin.post.index') }}">
+                        <a class="nav-link @if(request()->is('admin/post'))active @endif" href="{{ route('admin.post.index') }}">
                             <span data-feather="file"></span>
                             Новости
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if(request()->is('admin/categories'))active @endif" href="{{ route('admin.categories.index') }}">
+                            <span data-feather="file"></span>
+                            Категории
                         </a>
                     </li>
                 </ul>

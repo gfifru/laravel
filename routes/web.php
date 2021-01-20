@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\News\PostsController;
 use App\Http\Controllers\News\CategoriesController;
 use App\Http\Controllers\News\Admin\PostController as AdminPostController;
+use App\Http\Controllers\News\Admin\CategoryController as AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,10 @@ Route::get('/admin', function () {
 // Админка новостей
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('post', AdminPostController::class);
+});
+// Админка категории новостей
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('categories', AdminCategoryController::class);
 });
 
 // Категории новостей

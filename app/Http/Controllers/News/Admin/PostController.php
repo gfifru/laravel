@@ -4,6 +4,8 @@ namespace App\Http\Controllers\News\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreateRequest;
+use App\Models\NewsCategory;
+use App\Models\NewsPost;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -11,22 +13,24 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        $posts = $this->news;
+        $posts = (new NewsPost())->getAllNews();
+
         return view('admin.news.posts.index', compact('posts'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
-        return view('admin.news.posts.create');
+        $categories = (new NewsCategory())->getAllCategories();
+        return view('admin.news.posts.create', compact('categories'));
     }
 
     /**
@@ -37,29 +41,29 @@ class PostController extends Controller
      */
     public function store(PostCreateRequest $request)
     {
-        session();
-        $data = $request->only('title', 'slug', 'category_id', 'text');
+//        session();
+//        $data = $request->only('title', 'slug', 'category_id', 'text');
+//
+//        $saveFile = function (array $data) {
+//            $responseData = [];
+//            $fileNews = storage_path('app/posts.txt');
+//            if (file_exists($fileNews)) {
+//                $file = file_get_contents($fileNews);
+//                $response = json_decode($file, true);
+//            }
+//            $responseData[] = $data;
+//            if (isset($response) && (!empty($response))) {
+//                $r = array_merge($response, $responseData);
+//            } else {
+//                $r = $responseData;
+//            }
+//            file_put_contents($fileNews, json_encode($r));
+//        };
+//
+//        $saveFile($data);
+//
+//        session()->flash('success', 'Пост сохранен!');
 
-        $saveFile = function (array $data) {
-            $responseData = [];
-            $fileNews = storage_path('app/posts.txt');
-            if (file_exists($fileNews)) {
-                $file = file_get_contents($fileNews);
-                $response = json_decode($file, true);
-            }
-            $responseData[] = $data;
-            if (isset($response) && (!empty($response))) {
-                $r = array_merge($response, $responseData);
-            } else {
-                $r = $responseData;
-            }
-            file_put_contents($fileNews, json_encode($r));
-        };
-
-        $saveFile($data);
-
-        session()->flash('success', 'Пост сохранен!');
-        return redirect()->route('admin.post.index');
     }
 
     /**
@@ -77,11 +81,18 @@ class PostController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|void
      */
     public function edit(int $id)
     {
-        dd(__METHOD__, $id);
+        $post = (new NewsPost())->getOneNews($id);
+        $categories = (new NewsCategory())->getAllCategories();
+
+        if (!$post) {
+            return abort(404);
+        }
+
+        return view('admin.news.posts.edit', compact('post', 'categories'));
     }
 
     /**
