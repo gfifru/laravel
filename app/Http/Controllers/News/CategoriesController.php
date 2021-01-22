@@ -13,7 +13,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = (new NewsCategory())->getAllCategories();
+        $categories = NewsCategory::all();
         return view('news.categories.index', compact('categories'));
     }
 
@@ -23,22 +23,7 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-//        if (isset($this->categories[$id])) {
-//            $category = $this->categories[$id];
-//        }
-//
-//        $news = $this->news;
-//
-//        $category_id = $id;
-//
-//        $map =  array_map(function($news) use($category_id) {
-//            if($news['category_id'] === $category_id) return $news;
-//        }, $news);
-//
-//        $response = array_filter($map, function($element) {
-//            return !empty($element);
-//        });
-
-
+        $category = NewsCategory::findOrFail($id);
+        return view('news.categories.show', compact('category'));
     }
 }

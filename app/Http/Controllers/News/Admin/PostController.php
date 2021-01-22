@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostCreateRequest;
 use App\Models\NewsCategory;
 use App\Models\NewsPost;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -17,8 +17,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = (new NewsPost())->getAllNews();
-
+        $posts = NewsPost::with('category')
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         return view('admin.news.posts.index', compact('posts'));
     }
 
@@ -29,7 +30,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = (new NewsCategory())->getAllCategories();
+        $categories = NewsCategory::select('id', 'title')->get();
         return view('admin.news.posts.create', compact('categories'));
     }
 
@@ -41,29 +42,17 @@ class PostController extends Controller
      */
     public function store(PostCreateRequest $request)
     {
-//        session();
-//        $data = $request->only('title', 'slug', 'category_id', 'text');
-//
-//        $saveFile = function (array $data) {
-//            $responseData = [];
-//            $fileNews = storage_path('app/posts.txt');
-//            if (file_exists($fileNews)) {
-//                $file = file_get_contents($fileNews);
-//                $response = json_decode($file, true);
-//            }
-//            $responseData[] = $data;
-//            if (isset($response) && (!empty($response))) {
-//                $r = array_merge($response, $responseData);
-//            } else {
-//                $r = $responseData;
-//            }
-//            file_put_contents($fileNews, json_encode($r));
-//        };
-//
-//        $saveFile($data);
-//
-//        session()->flash('success', 'Пост сохранен!');
+        $data = $request->all();
+        $data['slug']= Str::slug($data['title']);
+        $post = NewsPost::create($data);
 
+        if ($post) {
+            return redirect()
+                ->route('admin.post.index')
+                ->with('success', 'Пост сохранен!');
+        }
+
+        redirect()->back()->withInput();
     }
 
     /**
@@ -85,36 +74,50 @@ class PostController extends Controller
      */
     public function edit(int $id)
     {
-        $post = (new NewsPost())->getOneNews($id);
-        $categories = (new NewsCategory())->getAllCategories();
-
-        if (!$post) {
-            return abort(404);
-        }
-
+        $post = NewsPost::findOrFail($id);
+        $categories = NewsCategory::select('id', 'title')->get();
         return view('admin.news.posts.edit', compact('post', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param PostCreateRequest $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(PostCreateRequest $request, int $id)
     {
-        dd(__METHOD__, $id);
+        $post = NewsPost::find($id);
+        $data = $request->only('title', 'category_id', 'description');
+        $data['slug']= Str::slug($data['title']);
+
+        $status = $post->update($data);
+
+        if ($status) {
+            return redirect()
+                ->route('admin.post.index')
+                ->with('success', 'Пост обновлен!');
+        }
+
+        redirect()->back()->withInput();
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(int $id)
     {
-        dd(__METHOD__, $id);
+        $result = NewsPost::destroy($id);
+        if ($result) {
+            return redirect()
+                ->route('admin.post.index')
+                ->with('success', 'Пост удален!');
+        }
+
+        redirect()->back()->withInput();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News;
 
 use App\Http\Controllers\Controller;
+use App\Models\NewsPost;
 
 class PostsController extends Controller
 {
@@ -14,10 +15,8 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        if (isset($this->news[$id])) {
-            $news = $this->news[$id];
-        }
-        return view('news.posts.show', compact('news'));
+        $post = NewsPost::find($id);
+        return view('news.posts.show', compact('post'));
 
     }
 

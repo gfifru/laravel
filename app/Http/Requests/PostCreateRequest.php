@@ -26,9 +26,9 @@ class PostCreateRequest extends FormRequest
     {
         return [
             'title' => 'required|min:3|max:255',
-            'slug' => 'required|min:3|max:255',
+//            'slug' => 'required|min:3|max:255',
             'category_id' => 'required|numeric',
-            'text' => 'required|min:3|max:10000',
+            'description' => 'required|min:3|max:10000',
         ];
     }
 
@@ -52,9 +52,9 @@ class PostCreateRequest extends FormRequest
     {
         return [
             'title' => 'Заголовок',
-            'slug' => 'Url',
+//            'slug' => 'Url',
             'category_id' => 'Категория',
-            'text' => 'Текст',
+            'description' => 'Текст',
         ];
     }
 }

@@ -27,14 +27,27 @@
             <tr>
                 <td>{{ $post->id }}</td>
                 <td>{{ $post->title }}</td>
-                <td>{{ $post->category_title }}</td>
+                <td>{{ $post->category->title }}</td>
                 <td>{{ $post->created_at }}</td>
                 <td>{{ $post->status }}</td>
-                <td><a href="{{ route('admin.post.edit', $post->id) }}">Ред.</a></td>
+                <td>
+                    <div class="d-flex">
+                    <a class="btn btn-success" href="{{ route('admin.post.edit', $post->id) }}">Ред.</a>
+                    <form action="{{ route('admin.post.destroy', $post->id) }}" method="post">
+                        @method('delete')
+                        @csrf
+                        <button class="btn btn-danger ms-1" type="submit">Удалить</button>
+                    </form>
+                    </div>
+                </td>
             </tr>
         @endforeach
         </tbody>
     </table>
+
+    <ul class="pagination">
+        {{ $posts->links() }}
+    </ul>
 
 
 @endsection

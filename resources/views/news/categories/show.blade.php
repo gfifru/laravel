@@ -10,12 +10,12 @@
 
     <p><strong>{{ $category->description }}</strong></p>
 
-    @if(!$category)
+    @if(!$category->posts)
         <div>Новостей пока нет!</div>
     @endif
     <ul class="list-group list-group-flush">
 
-        @foreach($category->getPosts as $post)
+        @foreach($category->posts as $post)
             <li class="list-group-item"><a href="{{ route('news.show', $post->id) }}">{{ $post->title }}</a></li>
         @endforeach
     </ul>

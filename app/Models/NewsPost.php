@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 class NewsPost extends Model
 {
@@ -12,27 +11,15 @@ class NewsPost extends Model
 
     protected $table = 'news';
 
-    /**
-     * @return array
-     */
-    public function getAllNews(): array
-    {
-        return DB::table($this->table)
-            ->join('categories', 'news.category_id', '=', 'categories.id')
-            ->select('news.*', 'categories.title as category_title')
-            ->orderBy('id')
-            ->get()
-            ->toArray();
-    }
+    protected $fillable = [
+        'title',
+        'category_id',
+        'slug',
+        'description'
+    ];
 
-    /**
-     * @param $id
-     * @return \Illuminate\Database\Query\Builder|mixed
-     */
-    public function getOneNews($id)
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return DB::table($this->table)->find($id);
+        return $this->belongsTo(NewsCategory::class, 'category_id', 'id');
     }
 }
-// Источник новостей
-// id, title, url

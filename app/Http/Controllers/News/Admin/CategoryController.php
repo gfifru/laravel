@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\News\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\NewsCategory;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -10,11 +11,12 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        $categories = NewsCategory::all();
+        return view('admin.news.categories.index', compact('categories'));
     }
 
     /**
