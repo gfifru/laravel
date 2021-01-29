@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\News\Admin\IndexController;
+use App\Http\Controllers\News\Admin\ProfileController;
+use App\Http\Controllers\News\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\News\PostsController;
 use App\Http\Controllers\News\CategoriesController;
@@ -31,18 +34,31 @@ Route::get('/contacts', function () {
 
 
 // Админка
-Route::get('/admin', function () {
-    return view('admin.index');
-})->name('admin.index');
+Route::group([
+        'prefix' => 'admin',
+        'middleware' => 'auth',
+        'as' => 'admin.'
+    ], function () {
 
-// Админка новостей
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('post', AdminPostController::class);
+        Route::get('/', [IndexController::class, 'index'])->name('index');
+
+        Route::match(['post', 'get'], 'profile', [ProfileController::class, 'updateProfile'])
+            ->name('profile');
+
+        Route::get('/logout', function () {
+            \Auth::logout();
+            return redirect()->route('welcome');
+        })->name('logout');
+
+        Route::group(['middleware' => 'admin'], function () {
+
+            Route::resource('post', AdminPostController::class);
+            Route::resource('categories', AdminCategoryController::class);
+            Route::resource('users', UserController::class);
+
+        });
 });
-// Админка категории новостей
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::resource('categories', AdminCategoryController::class);
-});
+
 
 // Категории новостей
 Route::prefix('/categories')->group(function () {
@@ -60,5 +76,5 @@ Route::prefix('/news')->group(function () {
 });
 
 
-
+Auth::routes();
 

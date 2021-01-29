@@ -39,8 +39,14 @@
     </button>
     <input class="form-control form-control-dark w-100" type="text" placeholder="Поиск" aria-label="Search">
     <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="{{ route('welcome') }}">Выйти</a>
+        <li class="nav-item">
+                <a class="nav-link" href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    {{ __('Выйти') }}
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
         </li>
     </ul>
 </header>
@@ -51,11 +57,18 @@
             <div class="position-sticky pt-3">
                 <ul class="nav flex-column">
                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="{{ route('welcome') }}">
+                            <span data-feather="home"></span>
+                            Сайт
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link @if(request()->is('admin'))active @endif" aria-current="page" href="{{ route('admin.index') }}">
                             <span data-feather="home"></span>
                             Главная
                         </a>
                     </li>
+                    @admin
                     <li class="nav-item">
                         <a class="nav-link @if(request()->is('admin/post'))active @endif" href="{{ route('admin.post.index') }}">
                             <span data-feather="file"></span>
@@ -66,6 +79,19 @@
                         <a class="nav-link @if(request()->is('admin/categories'))active @endif" href="{{ route('admin.categories.index') }}">
                             <span data-feather="file"></span>
                             Категории
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if(request()->is('admin/users'))active @endif" href="{{ route('admin.users.index') }}">
+                            <span data-feather="users"></span>
+                            Пользователи
+                        </a>
+                    </li>
+                    @endadmin
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.logout') }}">
+                            <span data-feather="file"></span>
+                            Выйти (get)
                         </a>
                     </li>
                 </ul>
