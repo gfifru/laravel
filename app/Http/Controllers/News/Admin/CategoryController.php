@@ -48,9 +48,9 @@ class CategoryController extends Controller
         $data = $request->all();
         $data['slug']= Str::slug($data['title']);
 
-        $post = NewsCategory::create($data);
+        $category = NewsCategory::create($data);
 
-        if ($post) {
+        if ($category) {
             return redirect()
                 ->route('admin.categories.index')
                 ->with('success', 'Категория сохранена!');

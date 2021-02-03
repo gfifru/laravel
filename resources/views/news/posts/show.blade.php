@@ -8,4 +8,5 @@
     </div>
     <p>{{ $post->description }}</p>
     <br>
+    <p>Кол-во просмотров: {{ $post->view_counter }}</p>
 @endsection

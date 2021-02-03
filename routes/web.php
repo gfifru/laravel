@@ -3,6 +3,8 @@
 use App\Http\Controllers\News\Admin\IndexController;
 use App\Http\Controllers\News\Admin\ProfileController;
 use App\Http\Controllers\News\Admin\UserController;
+use App\Http\Controllers\ParserController;
+use App\Http\Controllers\Social\VkontakteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\News\PostsController;
 use App\Http\Controllers\News\CategoriesController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\News\Admin\CategoryController as AdminCategoryControlle
 |
 */
 
+// Страницы
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -78,3 +81,12 @@ Route::prefix('/news')->group(function () {
 
 Auth::routes();
 
+// Parser
+Route::get('/parser', [ParserController::class, 'index'])
+    ->name('parser');
+
+// VK
+Route::get('/auth/vk/redirect', [VkontakteController::class, 'redirect'])
+    ->name('vk.redirect');
+Route::get('/auth/vk/callback', [VkontakteController::class, 'callback'])
+    ->name('vk.callback');
