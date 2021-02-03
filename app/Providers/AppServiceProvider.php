@@ -2,6 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Services\AuthService;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +18,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        if ($this->app->isLocal()) {
+            $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        }
+        $this->app->bind(AuthService::class, function ($app) {
+            return new AuthService();
+        });
     }
 
     /**
@@ -23,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // подключаем bootstrap для пагинации
+        Paginator::useBootstrap();
+
+        // директива blade на проверку админа
+        Blade::if('admin', function() {
+            return User::where('id',Auth::user()->id)->firstOrFail()->is_admin;
+        });
     }
 }
