@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,7 +31,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|NewsPost whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|NewsPost whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|NewsPost whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
+ * @property int $view_counter
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsPost whereViewCounter($value)
  */
 class NewsPost extends Model
 {
@@ -42,7 +45,9 @@ class NewsPost extends Model
         'title',
         'category_id',
         'slug',
-        'description'
+        'description',
+        'image',
+        'created_at'
     ];
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo

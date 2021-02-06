@@ -10,7 +10,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
@@ -49,7 +48,15 @@ class PostController extends Controller
     public function store(PostCreateRequest $request): RedirectResponse
     {
         $data = $request->all();
-        $data['slug']= Str::slug($data['title']);
+        $data['slug'] = Str::slug($data['title']);
+
+        if ($request->has('image')) {
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $fileName = Str::slug($file->getClientOriginalName());
+            $data['image'] = $file->storeAs('posts', $fileName . '.' . $ext);
+        }
+
         $post = NewsPost::create($data);
 
         if ($post) {
@@ -58,7 +65,7 @@ class PostController extends Controller
                 ->with('success', 'Пост сохранен!');
         }
 
-        redirect()->back()->withInput();
+        return redirect()->back()->withInput();
     }
 
     /**
@@ -106,7 +113,7 @@ class PostController extends Controller
                 ->with('success', 'Пост обновлен!');
         }
 
-        redirect()->back()->withInput();
+        return redirect()->back()->withInput();
     }
 
     /**
@@ -124,6 +131,6 @@ class PostController extends Controller
                 ->with('success', 'Пост удален!');
         }
 
-        redirect()->back()->withInput();
+        return redirect()->back()->withInput();
     }
 }

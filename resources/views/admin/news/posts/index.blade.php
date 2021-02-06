@@ -16,6 +16,7 @@
             <tr>
                 <th>#</th>
                 <th>Заголовок</th>
+                <th>Изображение</th>
                 <th>Категория</th>
                 <th>Дата создания</th>
                 <th>Статус</th>
@@ -27,6 +28,8 @@
             <tr>
                 <td>{{ $post->id }}</td>
                 <td>{{ $post->title }}</td>
+                <td><img width="80px" src="{{ \Illuminate\Support\Facades\Storage::url($post->image) }}" alt=""></td>
+{{--                <td><img width="80px" src="{{ asset('storage/' . $post->image) }}" alt=""></td>--}}
                 <td>{{ $post->category->title }}</td>
                 <td>{{ $post->created_at }}</td>
                 <td>{{ $post->status }}</td>

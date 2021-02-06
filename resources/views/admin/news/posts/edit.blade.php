@@ -29,8 +29,12 @@
         </div>
         <div class="mb-3">
             <label for="description">Текст
-                <textarea style="width: 600px;" name="description" class="form-control">{{ $post->description }}</textarea></label>
+                <textarea style="width: 600px;" name="description" id="description" class="form-control">{{ $post->description }}</textarea></label>
         </div>
         <button type="submit" class="btn btn-success">Обновить</button>
     </form>
 @endsection
+
+@push('js')
+    <script src="//cdn.ckeditor.com/4.16.0/full/ckeditor.js"></script>
+@endpush

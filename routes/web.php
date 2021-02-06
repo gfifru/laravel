@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\News\Admin\IndexController;
 use App\Http\Controllers\News\Admin\ProfileController;
+use App\Http\Controllers\News\Admin\SourceController;
 use App\Http\Controllers\News\Admin\UserController;
 use App\Http\Controllers\ParserController;
 use App\Http\Controllers\Social\VkontakteController;
@@ -58,6 +59,11 @@ Route::group([
             Route::resource('post', AdminPostController::class);
             Route::resource('categories', AdminCategoryController::class);
             Route::resource('users', UserController::class);
+            Route::resource('sources', SourceController::class);
+
+            // Parser
+            Route::get('parser', [ParserController::class, 'index'])
+                ->name('parser');
 
         });
 });
@@ -81,12 +87,14 @@ Route::prefix('/news')->group(function () {
 
 Auth::routes();
 
-// Parser
-Route::get('/parser', [ParserController::class, 'index'])
-    ->name('parser');
+
 
 // VK
 Route::get('/auth/vk/redirect', [VkontakteController::class, 'redirect'])
     ->name('vk.redirect');
 Route::get('/auth/vk/callback', [VkontakteController::class, 'callback'])
     ->name('vk.callback');
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth', 'admin']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});

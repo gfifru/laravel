@@ -55,7 +55,7 @@ class CategoryController extends Controller
                 ->route('admin.categories.index')
                 ->with('success', 'Категория сохранена!');
         } else {
-            redirect()->back()->withErrors(['msg' => "Ошибка сохранения!"])->withInput();
+            return redirect()->back()->withErrors(['msg' => "Ошибка сохранения!"])->withInput();
         }
     }
 
@@ -102,7 +102,7 @@ class CategoryController extends Controller
                 ->route('admin.categories.index')
                 ->with('success', 'Категория обновлена!');
         }else {
-            redirect()->back()->withErrors(['msg' => "Ошибка сохранения!"])->withInput();
+            return redirect()->back()->withErrors(['msg' => "Ошибка сохранения!"])->withInput();
         }
     }
 
@@ -121,6 +121,6 @@ class CategoryController extends Controller
                 ->with('success', 'Категория удалена!');
         }
 
-        redirect()->back()->withInput();
+        return redirect()->back()->withInput();
     }
 }

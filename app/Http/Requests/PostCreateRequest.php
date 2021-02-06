@@ -26,7 +26,7 @@ class PostCreateRequest extends FormRequest
     {
         return [
             'title' => 'required|min:3|max:255',
-//            'slug' => 'required|min:3|max:255',
+            'image' => 'sometimes|image:jpg,jpeg,png|max:512',
             'category_id' => 'required|numeric',
             'description' => 'required|min:3|max:10000',
         ];
@@ -41,7 +41,9 @@ class PostCreateRequest extends FormRequest
             'required' => 'Поле [:attribute] не должно быть пустым!',
             'min' => 'Поле [:attribute] должно содержать минимум [:min] знака!',
             'max' => 'Поле [:attribute] должно содержать максимум [:max] знаков!',
-            'numeric' => 'Поле [:attribute] должно содержать только цифры!'
+            'numeric' => 'Поле [:attribute] должно содержать только цифры!',
+            'image.image' => 'Изображение должно быть JPG,JPEG или PNG!',
+            'image.max' => 'Размер изображения не должен привышать 512 кб!',
         ];
     }
 

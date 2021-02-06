@@ -27,8 +27,14 @@ class ChangeCounterPostListener
     public function handle($event)
     {
         if (isset($event->post) && $event->post instanceof NewsPost) {
-            $event->post->view_counter++;
-            $event->post->save();
+            // через кэш
+            $ipUser = request()->ip();
+            $key = 'views-' . $event->post->id . '-' . $ipUser;
+            if (!cache()->has($key)) {
+                cache()->put($key, 1, now()->addHours(24));
+                $event->post->view_counter++;
+                $event->post->save();
+            }
         }
     }
 }
