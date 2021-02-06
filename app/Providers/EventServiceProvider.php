@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Events\PostViewCounter;
+use App\Listeners\ChangeCounterPostListener;
+use App\Listeners\ChangeDateListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +21,16 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        'Illuminate\Auth\Events\Login' => [
+            ChangeDateListener::class
+        ],
+        PostViewCounter::class => [
+            ChangeCounterPostListener::class
+        ],
+        SocialiteWasCalled::class => [
+            // ... other providers
+            'SocialiteProviders\\VKontakte\\VKontakteExtendSocialite@handle',
         ],
     ];
 
